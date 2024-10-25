@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Chatbot</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Background Styling */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #6dd5ed, #2193b0);
+        }
+
+        /* Chat Container Styling */
+        .chat-container {
+            width: 400px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-header {
+            background-color: #2193b0;
+            color: #fff;
+            text-align: center;
+            padding: 15px;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        /* Chat Box Styling */
+        .chat-box {
+            padding: 15px;
+            height: 400px;
+            overflow-y: auto;
+            background-color: #f7f9fc;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Message Bubbles */
+        .message {
+            max-width: 70%;
+            margin: 8px 0;
+            padding: 10px;
+            border-radius: 10px;
+            line-height: 1.5;
+            position: relative;
+        }
+
+        .user-message {
+            background-color: #4fd3c4;
+            align-self: flex-end;
+            color: #fff;
+        }
+
+        .bot-message {
+            background-color: #ededed;
+            align-self: flex-start;
+            color: #333;
+        }
+
+        /* Chat Input Styling */
+        .chat-input {
+            display: flex;
+            border-top: 1px solid #ddd;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            outline: none;
+            font-size: 16px;
+        }
+
+        .chat-input button {
+            padding: 15px;
+            border: none;
+            background-color: #4fd3c4;
+            color: #fff;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .chat-input button:hover {
+            background-color: #3bbba3;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            Interactive Chatbot
+        </div>
+        <div class="chat-box" id="chat-box">
+            <!-- Messages will be added here dynamically -->
+        </div>
+        <div class="chat-input">
+            <input type="text" id="user-input" placeholder="Type a message...">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        function sendMessage() {
+            const userInput = document.getElementById("user-input");
+            const chatBox = document.getElementById("chat-box");
+
+            // Get and trim user message
+            const messageText = userInput.value.trim();
+            if (messageText === "") return;
+
+            // Display user's message
+            const userMessage = document.createElement("div");
+            userMessage.className = "message user-message";
+            userMessage.textContent = messageText;
+            chatBox.appendChild(userMessage);
+
+            // Clear input field
+            userInput.value = "";
+
+            // Scroll chat box to the bottom
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            // Display bot's response after a short delay
+            setTimeout(() => {
+                const botMessage = document.createElement("div");
+                botMessage.className = "message bot-message";
+                botMessage.textContent = getBotResponse(messageText);
+                chatBox.appendChild(botMessage);
+
+                // Scroll chat box to show the new message
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }, 600);
+        }
+
+        // Generate a bot response based on the user's message
+        function getBotResponse(userText) {
+            const lowerText = userText.toLowerCase();
+
+            if (lowerText.includes("hello") || lowerText.includes("hi")) {
+                return "Hello! How can I assist you today? 😊";
+            } else if (lowerText.includes("how are you")) {
+                return "I'm just a bot, but I'm here to make your day better! 🌞";
+            } else if (lowerText.includes("help")) {
+                return "Sure, I'm here to help! What do you need assistance with?";
+            } else if (lowerText.includes("bye")) {
+                return "Goodbye! Feel free to come back anytime. 👋";
+            } else {
+                return "I'm not sure how to respond to that, but I'm here to help!";
+            }
+        }
+
+        // Enable Enter key to send message
+        document.getElementById("user-input").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html>
